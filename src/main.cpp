@@ -1,13 +1,7 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "Browser.hpp"
 
-int main(int argc, char *argv[])
+int main(const int argc, char* argv[])
 {
-    QGuiApplication app(argc, argv);
-
-    QQmlApplicationEngine engine;
-    const QUrl url(u"qrc:/base/main.qml"_qs);
-    engine.load(url);
-
-    return QGuiApplication::exec();
+    const Browser browser { argc, argv };
+    return browser.run();
 }
