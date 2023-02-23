@@ -19,6 +19,7 @@
 Browser::Browser(int argc, char* argv[])
     : m_core { argc, argv }
 {
+    QtWebEngineQuick::initialize();
     m_qmlEngine.load(u"qrc:/base/main.qml"_qs);
 }
 
