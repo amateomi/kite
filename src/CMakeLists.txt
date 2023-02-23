@@ -12,9 +12,6 @@ qt_add_executable(kite
 	backend/Browser.cpp
 )
 
-include(Format)
-Format(kite backend)
-
 target_include_directories(kite PRIVATE backend/include)
 
 target_link_libraries(kite
@@ -22,6 +19,12 @@ target_link_libraries(kite
 	Qt6::Gui
 	Qt6::Quick
 )
+
+include(Format)
+Format(kite backend)
+
+include(ClangTidy)
+AddClangTidy(kite backend)
 
 qt_add_qml_module(kite
     URI base
