@@ -7,8 +7,13 @@ find_package(Qt6 6.2 COMPONENTS Quick Gui REQUIRED)
 qt_add_executable(kite
 	main.cpp
 
+	backend/include/Browser.hpp
+
 	backend/Browser.cpp
 )
+
+include(Format)
+Format(kite backend)
 
 target_include_directories(kite PRIVATE backend/include)
 
