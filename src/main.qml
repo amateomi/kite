@@ -15,12 +15,17 @@
  ****************************************************************************/
 
 import QtQuick
+import QtWebEngine
 
 Window {
     id: root
+    width: 1024
+    height: 750
     visible: true
-    Text {
-        text: "Hello, Web!"
-        anchors.centerIn: parent
+    
+    WebEngineView {
+        id: webview
+        anchors.fill: parent
+        url: "https://google.com" 
     }
 }

@@ -18,6 +18,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QtWebEngineQuick/qtwebenginequickglobal.h>
 
 class Browser {
 public:
