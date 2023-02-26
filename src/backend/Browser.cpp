@@ -16,11 +16,14 @@
 
 #include "Browser.hpp"
 
+#include <QtWebEngineQuick/qtwebenginequickglobal.h>
+
 Browser::Browser(int argc, char* argv[])
-    : m_core { argc, argv }
 {
     QtWebEngineQuick::initialize();
-    m_qmlEngine.load(u"qrc:/base/main.qml"_qs);
+    m_core = std::make_unique<QGuiApplication>(argc, argv);
+    m_qmlEngine = std::make_unique<QQmlApplicationEngine>();
+    m_qmlEngine->load(u"qrc:/base/main.qml"_qs);
 }
 
 int Browser::run() { return QGuiApplication::exec(); }

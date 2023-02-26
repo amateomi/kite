@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
 
 class Browser {
 public:
@@ -27,6 +28,6 @@ public:
     [[nodiscard]] static int run();
 
 private:
-    QGuiApplication m_core;
-    QQmlApplicationEngine m_qmlEngine;
+    std::unique_ptr<QGuiApplication> m_core{};
+    std::unique_ptr<QQmlApplicationEngine> m_qmlEngine{};
 };
