@@ -19,10 +19,10 @@ import QtWebEngine
 
 Window {
     id: root
-    width: 1024
-    height: 750
+    width: 1280
+    height: 720
     visible: true
-    
+
     WebEngineView {
         id: webview
         anchors.fill: parent
