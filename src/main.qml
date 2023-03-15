@@ -16,6 +16,8 @@
 
 import QtQuick
 import QtWebEngine
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Window {
     id: root
@@ -23,9 +25,39 @@ Window {
     height: 720
     visible: true
 
+    
+    Frame {
+        // Just dummy frame to structurizing window sections
+        // Perhaps need to delete 'cause have a cringe border
+        id: top_bar
+        height: topbar_shape.height + 1 
+        width: topbar_shape.width + 1
+
+        Rectangle {
+            id: topbar_shape
+            color: "blue"
+            width: root.width
+            height: 41;
+
+            GridLayout {
+                id: top_bar_grid
+                anchors.centerIn: parent
+                columns: 5
+                Button{text: "button1"}
+                Text{text: "button2"}
+                Text{text: "searchbar"; color:"red"}
+            }
+        }
+        
+    }
+
     WebEngineView {
         id: webview
-        anchors.fill: parent
+        anchors.bottom: parent.bottom 
+        anchors.top: top_bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
         url: "https://google.com" 
     }
+
 }
