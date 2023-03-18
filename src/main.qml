@@ -25,32 +25,6 @@ Window {
     height: 720
     visible: true
 
-    /*
-    Frame {
-        // Just dummy frame to structurizing window sections
-        // Perhaps need to delete 'cause have a cringe border
-        id: top_bar
-       
-
-        Rectangle {
-            id: topbar_shape
-            color: "blue"
-            width: root.width
-            height: 41;
-
-            GridLayout {
-                id: top_bar_grid
-                anchors.centerIn: parent
-                columns: 5
-                Button{text: "button1"}
-                Text{text: "button2"}
-                Text{text: "searchbar"; color:"red"}
-            }
-        }
-        
-    }
-    */
-
     Rectangle {
         id: topBar
         height: 48
