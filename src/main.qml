@@ -15,15 +15,39 @@
  ****************************************************************************/
 
 import QtQuick
-import QtWebEngine
-import QtQuick.Controls
 import QtQuick.Layouts
+
+import QtQuick.Controls
+
+import QtQml.Models
+
+import QtWebEngine
+
+import backend.logic
 
 Window {
     id: root
+
     width: 1280
     height: 720
+
     visible: true
+
+    ListModel {
+        id: bookmarkListModel
+        ListElement {
+            name: "google"
+            url: "https://google.com"
+        }
+        ListElement {
+            name: "youtube"
+            url: "https://youtube.com"
+        }
+        ListElement {
+            name: "vk"
+            url: "https://vk.com"
+        }
+    }
 
     Rectangle {
         id: topBar
@@ -32,7 +56,7 @@ Window {
         color: "#383c49"
 
         RowLayout {
-            
+            spacing: 4
             anchors.verticalCenter: parent.verticalCenter
 
             Button {
@@ -47,13 +71,42 @@ Window {
                 id: refreshButton
                 text: "o"
             }
-            Button {
-                id: bookmarks
-                text: "b"
+
+            BookmarkManager {
+                id: bookmarkManager
             }
             Button {
-                id: addBookmarks
-                text: "a"
+                id: bookmarks
+                text: "bookmarks"
+
+                onClicked: menu.open()
+
+                Menu {
+                    id: menu
+                    y: bookmarks.height
+                    height: 20 * bookmarkListModel.count < root.height ? 20 * bookmarkListModel.count : root.height - 40
+                    width: 100
+
+                    contentItem: ListView {
+                        anchors.fill: parent
+                        model: bookmarkListModel
+                        delegate: Button {
+                            height: 20
+                            width: menu.width
+                            text: name
+                            onClicked: {
+                                console.log(url)
+                            }
+                        }
+                    }
+                }
+            }
+            Button {
+                id: bookmarkAdder
+                text: "add"
+                onClicked: {
+                    bookmarkManager.addBookmark(webView.url)
+                }
             }
         }
 
@@ -74,16 +127,14 @@ Window {
         }
     }
 
-
     WebEngineView {
-        id: webview
+        id: webView
         anchors {
-            bottom: parent.bottom 
+            bottom: parent.bottom
             top: topBar.bottom
             left: parent.left
             right: parent.right
         }
-        url: "https://google.com" 
+        url: "https://google.com"
     }
-
 }
