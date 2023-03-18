@@ -8,8 +8,10 @@ qt_add_executable(kite
 	main.cpp
 
 	backend/include/Browser.hpp
+        backend/include/BookmarkManager.hpp
 
 	backend/Browser.cpp
+        backend/BookmarkManager.cpp
 )
 
 target_include_directories(kite PRIVATE backend/include)
@@ -30,5 +32,5 @@ qt_add_qml_module(kite
     URI base
     VERSION 1.0
     QML_FILES
-		main.qml
+        main.qml
 )
