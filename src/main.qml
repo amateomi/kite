@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  * Copyright (c) 2022 Andrey Sikorin, Ivan Grigorik                         *
  *                                                                          *
  * This program is free software: you can redistribute it and/or modify     *
@@ -25,13 +25,12 @@ Window {
     height: 720
     visible: true
 
-    
+    /*
     Frame {
         // Just dummy frame to structurizing window sections
         // Perhaps need to delete 'cause have a cringe border
         id: top_bar
-        height: topbar_shape.height + 1 
-        width: topbar_shape.width + 1
+       
 
         Rectangle {
             id: topbar_shape
@@ -50,13 +49,66 @@ Window {
         }
         
     }
+    */
+
+    Rectangle {
+        id: topBar
+        height: 48
+        width: root.width
+        color: "#383c49"
+
+        RowLayout {
+            
+            anchors.verticalCenter: parent.verticalCenter
+
+            Button {
+                id: backButton
+                text: "←"
+            }
+            Button {
+                id: fowardButton
+                text: "→"
+            }
+            Button {
+                id: refreshButton
+                text: "o"
+            }
+            Button {
+                id: bookmarks
+                text: "b"
+            }
+            Button {
+                id: addBookmarks
+                text: "a"
+            }
+        }
+
+        TextField {
+            id: searchBar
+            anchors.centerIn: parent
+            width: parent.width / 2
+            height: 40
+
+            palette.placeholderText: "#f0f4ff"
+            verticalAlignment: Text.AlignVCenter
+            placeholderText: qsTr("Search with Google or enter address")
+
+            background: Rectangle {
+                color: "#505168"
+                radius: 10
+            }
+        }
+    }
+
 
     WebEngineView {
         id: webview
-        anchors.bottom: parent.bottom 
-        anchors.top: top_bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors {
+            bottom: parent.bottom 
+            top: topBar.bottom
+            left: parent.left
+            right: parent.right
+        }
         url: "https://google.com" 
     }
 
