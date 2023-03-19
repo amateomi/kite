@@ -14,23 +14,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#pragma once
+#include "BookmarkModel.hpp"
 
-#include <memory>
+BookmarkModel::BookmarkModel(QObject *parent)
+    : QObject{parent} {}
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+BookmarkModel::BookmarkModel(const QString &name, const QString &url, QObject *parent)
+    : QObject{parent}, m_name{name}, m_url{url} {}
 
-#include "BookmarkManager.hpp"
+QString BookmarkModel::name() const
+{
+    return m_name;
+}
 
-class Browser {
-public:
-    Browser(int argc, char* argv[]);
+void BookmarkModel::setName(const QString &name)
+{
+    if (m_name != name) {
+        m_name = name;
+        emit nameChanged();
+    }
+}
 
-    [[nodiscard]] static int run();
+QString BookmarkModel::url() const
+{
+    return m_url;
+}
 
-private:
-    QScopedPointer<QGuiApplication> m_core{};
-    QScopedPointer<QQmlApplicationEngine> m_qmlEngine{};
-    QScopedPointer<BookmarkManager> m_bookmarkManager;
-};
+void BookmarkModel::setUrl(const QString &url)
+{
+    if (m_url != url) {
+        m_url = url;
+        emit urlChanged();
+    }
+}

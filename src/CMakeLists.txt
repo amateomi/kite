@@ -9,9 +9,11 @@ qt_add_executable(kite
 
 	backend/include/Browser.hpp
         backend/include/BookmarkManager.hpp
+        backend/include/BookmarkModel.hpp
 
 	backend/Browser.cpp
         backend/BookmarkManager.cpp
+        backend/BookmarkModel.cpp
 )
 
 target_include_directories(kite PRIVATE backend/include)
