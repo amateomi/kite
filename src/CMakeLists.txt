@@ -8,10 +8,14 @@ qt_add_executable(kite
 	main.cpp
 
 	backend/include/Browser.hpp
-        backend/include/SearchBarManager.hpp
-
+  backend/include/SearchBarManager.hpp
+  backend/include/BookmarkManager.hpp
+  backend/include/BookmarkModel.hpp
+  
 	backend/Browser.cpp
-        backend/SearchBarManager.cpp
+  backend/SearchBarManager.cpp
+  backend/BookmarkManager.cpp
+  backend/BookmarkModel.cpp
 )
 
 target_include_directories(kite PRIVATE backend/include)
@@ -31,9 +35,10 @@ AddClangTidy(kite backend)
 qt_add_qml_module(kite
     URI base
     VERSION 1.0
+    
     QML_FILES
         main.qml
-
+        
     # Textures/icons
     RESOURCES
         ../images/backIcon.svg

@@ -16,20 +16,20 @@
 
 #pragma once
 
-#include <QGuiApplication>
+#include <QObject>
+#include <QString>
 #include <QQmlApplicationEngine>
+#include <QObjectList>
 
-#include "BookmarkManager.hpp"
-#include "SearchBarManager.hpp"
+class BookmarkManager : public QObject {
+    Q_OBJECT
 
-class Browser {
 public:
-    Browser(int argc, char* argv[]);
+    explicit BookmarkManager(QQmlApplicationEngine& qmlEngine, QObject* parent = nullptr);
 
-    [[nodiscard]] static int run();
+    Q_INVOKABLE void addBookmark(const QString& name, const QString& url);
 
 private:
-    QScopedPointer<QGuiApplication> m_core{};
-    QScopedPointer<QQmlApplicationEngine> m_qmlEngine{};
-    QScopedPointer<BookmarkManager> m_bookmarkManager;
+    QObjectList m_bookmarks{};
+    QQmlApplicationEngine& m_qmlEngine;
 };

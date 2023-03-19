@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
  * Copyright (c) 2022 Andrey Sikorin, Ivan Grigorik                         *
  *                                                                          *
  * This program is free software: you can redistribute it and/or modify     *
@@ -15,18 +15,22 @@
  ****************************************************************************/
 
 import QtQuick
-import QtWebEngine
-import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls
+
+import QtQml.Models
+
+import QtWebEngine
 
 import backend.logic
 
-Window {
+ApplicationWindow {
     id: root
+
     width: 1280
     height: 720
-    visible: true
 
+    visible: true
 
     Rectangle {
         id: topBar
@@ -38,7 +42,7 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 10
 
-
+            // TODO: Move common functionality to other .qml files
             // TODO: fix hoverable, when can't go back or forward
             // Go back
             RoundButton {
@@ -66,9 +70,9 @@ Window {
                 }
 
                 onPressed: {
-                    if (webview.canGoBack){
+                    if (webView.canGoBack) {
                         background.color = "#666d84"
-                        webview.goBack()
+                        webView.goBack()
                     }
                 }
                 onReleased: {
@@ -100,9 +104,9 @@ Window {
                 }
 
                 onPressed: {
-                    if (webview.canGoForward){
+                    if (webView.canGoForward) {
                         background.color = "#666d84"
-                        webview.goForward()
+                        webView.goForward()
                     }
                 }
                 onReleased: {
@@ -136,13 +140,76 @@ Window {
 
                 onPressed: {
                     background.color = "#666d84"
-                    webview.reload()
+                    webView.reload()
                 }
                 onReleased: {
                     background.color = "#505668"
                 }
             }
 
+            Button {
+                id: bookmarkButton
+                text: "bookmarks"
+
+                onClicked: bookmarkMenu.open()
+
+                Menu {
+                    id: bookmarkMenu
+
+                    y: bookmarkButton.height
+                    width: 100
+                    height: 20 * bookmarkListView.count
+
+                    contentItem: bookmarkListView
+                    ListView {
+                        id: bookmarkListView
+
+                        anchors.fill: parent
+
+                        interactive: false
+
+                        model: bookmarkListModel
+
+                        delegate: Button {
+                            width: bookmarkListView.width; height: 20
+
+                            text: name
+
+                            onClicked: {
+                                webView.url = url
+                            }
+                        }
+                    }
+                }
+            }
+            Button {
+                id: bookmarkAddButton
+                text: "+"
+
+                onClicked: bookmarkAddDialog.open()
+
+                Dialog {
+                    id: bookmarkAddDialog
+                    title: "Add Bookmark"
+                    height: 60
+                    width: 120
+
+                    TextField {
+                        id: bookmarkAddField
+
+                        height: 20
+                        width: 100
+
+                        verticalAlignment: Text.AlignVCenter
+                        placeholderText: qsTr("Name")
+
+                        onAccepted: {
+                            bookmarkManager.addBookmark(text, webView.url)
+                            text = ""
+                        }
+                    }
+                }
+            }
         }
 
         SearchBar {
@@ -171,21 +238,22 @@ Window {
 
             // Logic
             onAccepted: {
-                searchBarManager.receiveNewUrl(text, webview)
+                searchBarManager.receiveNewUrl(text, webView)
                 searchBar.focus = false
             }
         }
     }
 
     WebEngineView {
-        id: webview
+        id: webView
         anchors {
             bottom: parent.bottom
             top: topBar.bottom
             left: parent.left
             right: parent.right
         }
-        url: "https://www.google.com/"
+        
+        url: "https://google.com"
 
         onUrlChanged: searchBar.text = url
 

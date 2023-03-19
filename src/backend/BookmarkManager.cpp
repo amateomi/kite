@@ -14,22 +14,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#pragma once
-
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-
 #include "BookmarkManager.hpp"
-#include "SearchBarManager.hpp"
 
-class Browser {
-public:
-    Browser(int argc, char* argv[]);
+#include <QDebug>
+#include <QQmlEngine>
+#include <QQmlContext>
 
-    [[nodiscard]] static int run();
+#include "BookmarkModel.hpp"
 
-private:
-    QScopedPointer<QGuiApplication> m_core{};
-    QScopedPointer<QQmlApplicationEngine> m_qmlEngine{};
-    QScopedPointer<BookmarkManager> m_bookmarkManager;
-};
+BookmarkManager::BookmarkManager(QQmlApplicationEngine& qmlEngine, QObject *parent)
+    : QObject{parent}, m_qmlEngine{qmlEngine}
+{
+    auto* context = m_qmlEngine.rootContext();
+    context->setContextProperty("bookmarkListModel", QVariant::fromValue(m_bookmarks));
+    context->setContextProperty("bookmarkManager", this);
+}
+
+void BookmarkManager::addBookmark(const QString& name, const QString& url)
+{
+    qDebug() << "addBookmark: " << "name: " << name << " url: " << url;
+    if (!name.isEmpty()) {
+        m_bookmarks.append(new BookmarkModel{name, url});
+        m_qmlEngine.rootContext()->setContextProperty("bookmarkListModel", QVariant::fromValue(m_bookmarks));
+    }
+}
