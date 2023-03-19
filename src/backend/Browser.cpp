@@ -17,12 +17,14 @@
 #include "Browser.hpp"
 
 #include <QtWebEngineQuick/qtwebenginequickglobal.h>
+#include <QQmlContext>
 
 Browser::Browser(int argc, char* argv[])
 {
     QtWebEngineQuick::initialize();
-    m_core = std::make_unique<QGuiApplication>(argc, argv);
-    m_qmlEngine = std::make_unique<QQmlApplicationEngine>();
+    m_core.reset(new QGuiApplication{argc, argv});
+    m_qmlEngine.reset(new QQmlApplicationEngine);
+    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
     m_qmlEngine->load("qrc:/base/main.qml");
 }
 

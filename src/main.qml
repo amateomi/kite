@@ -23,31 +23,13 @@ import QtQml.Models
 
 import QtWebEngine
 
-import backend.logic
-
-Window {
+ApplicationWindow {
     id: root
 
     width: 1280
     height: 720
 
     visible: true
-
-    ListModel {
-        id: bookmarkListModel
-        ListElement {
-            name: "google"
-            url: "https://google.com"
-        }
-        ListElement {
-            name: "youtube"
-            url: "https://youtube.com"
-        }
-        ListElement {
-            name: "vk"
-            url: "https://vk.com"
-        }
-    }
 
     Rectangle {
         id: topBar
@@ -72,40 +54,67 @@ Window {
                 text: "o"
             }
 
-            BookmarkManager {
-                id: bookmarkManager
-            }
             Button {
-                id: bookmarks
+                id: bookmarkButton
                 text: "bookmarks"
 
-                onClicked: menu.open()
+                onClicked: bookmarkMenu.open()
 
                 Menu {
-                    id: menu
-                    y: bookmarks.height
-                    height: 20 * bookmarkListModel.count < root.height ? 20 * bookmarkListModel.count : root.height - 40
-                    width: 100
+                    id: bookmarkMenu
 
-                    contentItem: ListView {
+                    y: bookmarkButton.height
+                    width: 100
+                    height: 20 * bookmarkListView.count
+
+                    contentItem: bookmarkListView
+                    ListView {
+                        id: bookmarkListView
+
                         anchors.fill: parent
+
+                        interactive: false
+
                         model: bookmarkListModel
+
                         delegate: Button {
-                            height: 20
-                            width: menu.width
+                            width: bookmarkListView.width; height: 20
+
                             text: name
+
                             onClicked: {
-                                console.log(url)
+                                webView.url = url
                             }
                         }
                     }
                 }
             }
             Button {
-                id: bookmarkAdder
-                text: "add"
-                onClicked: {
-                    bookmarkManager.addBookmark(webView.url)
+                id: bookmarkAddButton
+                text: "+"
+
+                onClicked: bookmarkAddDialog.open()
+
+                Dialog {
+                    id: bookmarkAddDialog
+                    title: "Add Bookmark"
+                    height: 60
+                    width: 120
+
+                    TextField {
+                        id: bookmarkAddField
+
+                        height: 20
+                        width: 100
+
+                        verticalAlignment: Text.AlignVCenter
+                        placeholderText: qsTr("Name")
+
+                        onAccepted: {
+                            bookmarkManager.addBookmark(text, webView.url)
+                            text = ""
+                        }
+                    }
                 }
             }
         }
@@ -113,8 +122,8 @@ Window {
         TextField {
             id: searchBar
             anchors.centerIn: parent
-            width: parent.width / 2
             height: 40
+            width: parent.width / 2
 
             palette.placeholderText: "#f0f4ff"
             verticalAlignment: Text.AlignVCenter
