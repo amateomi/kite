@@ -36,7 +36,7 @@ qt_add_qml_module(kite
 
     # Textures/icons
     RESOURCES
-        ../images/backIcon.png
-        ../images/forwardIcon.png
-        ../images/reloadIcon.png
+        ../images/backIcon.svg
+        ../images/forwardIcon.svg
+        ../images/reloadIcon.svg
 )
