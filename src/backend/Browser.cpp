@@ -22,9 +22,13 @@
 Browser::Browser(int argc, char* argv[])
 {
     QtWebEngineQuick::initialize();
+    
     m_core.reset(new QGuiApplication{argc, argv});
     m_qmlEngine.reset(new QQmlApplicationEngine);
     m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
+    
+    qmlRegisterType<SearchBar>("backend.logic", 1, 0, "SearchBar");
+    
     m_qmlEngine->load("qrc:/base/main.qml");
 }
 

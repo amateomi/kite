@@ -14,22 +14,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#pragma once
-
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-
-#include "BookmarkManager.hpp"
 #include "SearchBarManager.hpp"
 
-class Browser {
-public:
-    Browser(int argc, char* argv[]);
+#include <QDebug>
+#include <QQmlEngine>
+#include <QRegularExpression>
 
-    [[nodiscard]] static int run();
+#include <algorithm>
+#include <iostream>
 
-private:
-    QScopedPointer<QGuiApplication> m_core{};
-    QScopedPointer<QQmlApplicationEngine> m_qmlEngine{};
-    QScopedPointer<BookmarkManager> m_bookmarkManager;
-};
+SearchBar::SearchBar(QObject* parent)
+    : QObject { parent }
+{
+}
+
+void SearchBar::receiveNewUrl(QString& url, QObject* webView)
+{
+    // Always refreshing, if contains https prefix
+    static QRegularExpression httpsPattern { "^https://*", QRegularExpression::CaseInsensitiveOption };
+    if (httpsPattern.match(url).hasMatch()) {
+        QMetaObject::invokeMethod(webView, "reload");
+        return;
+    }
+
+    // Check is url
+    static QRegularExpression urlPattern { "^(?!-)[A-Za-z0-9-]+([\\-\\.]{1}[a-z0-9]+)*\\.[A-Za-z]{2,6}$",
+        QRegularExpression::CaseInsensitiveOption };
+    QRegularExpressionMatch match = urlPattern.match(url);
+    std::string newUrl;
+
+    if (match.hasMatch()) {
+        newUrl = "https://" + url.toStdString();
+    } else {
+        newUrl = "https://www.google.com/search?q=" + url.toStdString();
+        // Replace all spaces to get correct request
+        std::replace(newUrl.begin(), newUrl.end(), ' ', '+');
+    }
+
+    webView->setProperty("url", QString::fromStdString(newUrl));
+}
