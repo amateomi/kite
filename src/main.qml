@@ -75,6 +75,7 @@ ApplicationWindow {
                         webView.goBack()
                     }
                 }
+                
                 onReleased: {
                     background.color = "#505668"
                 }
@@ -109,6 +110,7 @@ ApplicationWindow {
                         webView.goForward()
                     }
                 }
+                
                 onReleased: {
                     background.color = "#505668"
                 }
@@ -142,6 +144,7 @@ ApplicationWindow {
                     background.color = "#666d84"
                     webView.reload()
                 }
+                
                 onReleased: {
                     background.color = "#505668"
                 }
