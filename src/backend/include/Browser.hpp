@@ -21,6 +21,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include <SearchBarManager.hpp>
+
 class Browser {
 public:
     Browser(int argc, char* argv[]);
@@ -30,4 +32,5 @@ public:
 private:
     std::unique_ptr<QGuiApplication> m_core{};
     std::unique_ptr<QQmlApplicationEngine> m_qmlEngine{};
+    SearchBar m_searchBar{};
 };

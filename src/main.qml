@@ -19,37 +19,13 @@ import QtWebEngine
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import backend.logic
+
 Window {
     id: root
     width: 1280
     height: 720
     visible: true
-
-    /*
-    Frame {
-        // Just dummy frame to structurizing window sections
-        // Perhaps need to delete 'cause have a cringe border
-        id: top_bar
-       
-
-        Rectangle {
-            id: topbar_shape
-            color: "blue"
-            width: root.width
-            height: 41;
-
-            GridLayout {
-                id: top_bar_grid
-                anchors.centerIn: parent
-                columns: 5
-                Button{text: "button1"}
-                Text{text: "button2"}
-                Text{text: "searchbar"; color:"red"}
-            }
-        }
-        
-    }
-    */
 
     Rectangle {
         id: topBar
@@ -61,9 +37,26 @@ Window {
             
             anchors.verticalCenter: parent.verticalCenter
 
-            Button {
+            RoundButton {
                 id: backButton
-                text: "←"
+                icon.name: "backButtonIcon"
+                icon.source: "images/backIcon.png"
+                icon.height: 30
+                icon.width: 50
+                icon.color: "red"
+
+                radius: 10
+                background: Rectangle{
+                    width: backButton.width
+                    height: backButton.height
+                    color: "#000000"
+                    radius: 10
+                }
+
+                onPressed: {
+                    background.color = "#ffffff"
+                }
+
             }
             Button {
                 id: fowardButton
@@ -78,38 +71,57 @@ Window {
                 text: "b"
             }
             Button {
+                background: Rectangle {
+                    color: "#505168"
+                    radius: 5
+                }
                 id: addBookmarks
                 text: "a"
             }
         }
 
+        SearchBar {
+            id: searchBarManager
+        }
+
         TextField {
+            // UI settings
             id: searchBar
             anchors.centerIn: parent
             width: parent.width / 2
-            height: 40
+            height: 32
 
-            palette.placeholderText: "#f0f4ff"
-            verticalAlignment: Text.AlignVCenter
-            placeholderText: qsTr("Search with Google or enter address")
+            palette.text: "#f0f4ff"
+            verticalAlignment: TextArea.AlignVCenter
+
+            placeholderText: "Search with Google or enter address"
+
+            selectByMouse: true
+            font.pixelSize: 16
 
             background: Rectangle {
                 color: "#505168"
-                radius: 10
+                radius: 5
+            }
+
+            // Logic
+            onAccepted: {
+                searchBarManager.receiveNewUrl(text, webview)
+                searchBar.focus = false
             }
         }
     }
 
-
     WebEngineView {
         id: webview
         anchors {
-            bottom: parent.bottom 
+            bottom: parent.bottom
             top: topBar.bottom
             left: parent.left
             right: parent.right
         }
-        url: "https://google.com" 
-    }
+        url: "https://www.google.com/"
 
+        onUrlChanged: searchBar.text = url
+    }
 }
