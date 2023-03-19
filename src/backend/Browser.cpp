@@ -23,6 +23,7 @@ Browser::Browser(int argc, char* argv[])
     QtWebEngineQuick::initialize();
     m_core = std::make_unique<QGuiApplication>(argc, argv);
     m_qmlEngine = std::make_unique<QQmlApplicationEngine>();
+    qmlRegisterType<SearchBar>("backend.logic", 1, 0, "SearchBar");
     m_qmlEngine->load(u"qrc:/base/main.qml"_qs);
 }
 

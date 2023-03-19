@@ -20,31 +20,32 @@
 #include <QQmlEngine>
 #include <QRegularExpression>
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
-SearchBar::SearchBar(QObject *parent)
-    : QObject{parent} {
-    qmlRegisterType<SearchBar>("backend.logic", 1, 0, "SearchBar");
+SearchBar::SearchBar(QObject* parent)
+    : QObject { parent }
+{
 }
 
-void SearchBar::receiveNewUrl(QString& url, QObject *webView) {
+void SearchBar::receiveNewUrl(QString& url, QObject* webView)
+{
     // Always refreshing, if contains https prefix
-    static QRegularExpression httpsPattern{"^https://*", QRegularExpression::CaseInsensitiveOption};
-    if(httpsPattern.match(url).hasMatch()){
+    static QRegularExpression httpsPattern { "^https://*", QRegularExpression::CaseInsensitiveOption };
+    if (httpsPattern.match(url).hasMatch()) {
         QMetaObject::invokeMethod(webView, "reload");
         return;
     }
 
     // Check is url
-    static QRegularExpression urlPattern{"^(?!-)[A-Za-z0-9-]+([\\-\\.]{1}[a-z0-9]+)*\\.[A-Za-z]{2,6}$",
-                                         QRegularExpression::CaseInsensitiveOption};
+    static QRegularExpression urlPattern { "^(?!-)[A-Za-z0-9-]+([\\-\\.]{1}[a-z0-9]+)*\\.[A-Za-z]{2,6}$",
+        QRegularExpression::CaseInsensitiveOption };
     QRegularExpressionMatch match = urlPattern.match(url);
     std::string newUrl;
 
-    if(match.hasMatch()) {
+    if (match.hasMatch()) {
         newUrl = "https://" + url.toStdString();
-    } else{
+    } else {
         newUrl = "https://www.google.com/search?q=" + url.toStdString();
         // Replace all spaces to get correct request
         std::replace(newUrl.begin(), newUrl.end(), ' ', '+');

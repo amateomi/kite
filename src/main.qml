@@ -27,6 +27,7 @@ Window {
     height: 720
     visible: true
 
+
     Rectangle {
         id: topBar
         height: 48
@@ -34,33 +35,73 @@ Window {
         color: "#383c49"
 
         RowLayout {
-            
             anchors.verticalCenter: parent.verticalCenter
+            spacing: 10
 
             RoundButton {
                 id: backButton
-                icon.name: "backButtonIcon"
-                icon.source: "images/backIcon.png"
-                icon.height: 30
-                icon.width: 50
-                icon.color: "red"
+                palette.button: "#505168"
 
-                radius: 10
-                background: Rectangle{
+                icon.source: "images/backIcon.png"
+                icon.height: 32
+                icon.color: "#f0f4ff"
+                radius: 2
+                Layout.leftMargin: 10
+
+                background: Rectangle {
                     width: backButton.width
                     height: backButton.height
-                    color: "#000000"
+                    color: "#383c49"
                     radius: 10
                 }
 
-                onPressed: {
-                    background.color = "#ffffff"
+                // UI logic stuff
+                onHoveredChanged: {
+                    backButton.background.color = backButton.hovered ? "#505668" : "#383c49"
                 }
 
+                onPressed: {
+                    background.color = "#666d84"
+                    if (webview.canGoBack){
+                        webview.goBack()
+                    }
+                }
+                onReleased: {
+                    background.color = "#505668"
+                }
             }
-            Button {
+
+            RoundButton {
                 id: fowardButton
-                text: "→"
+                x: 10; y: 10
+                palette.button: "#505168"
+
+                icon.source: "images/forwardIcon.png"
+                icon.height: 32
+                icon.color: "#f0f4ff"
+                radius: 2
+
+                background: Rectangle {
+                    width: fowardButton.width
+                    height: fowardButton.height
+                    color: "#383c49"
+                    radius: 10
+                }
+
+                // UI logic stuff
+                onHoveredChanged: {
+                    fowardButton.background.color = fowardButton.hovered ? "#505668" : "#383c49"
+                }
+
+                onPressed: {
+                    background.color = "#666d84"
+                    if (webview.canGoForward){
+                        webview.goForward()
+                    }
+                }
+                onReleased: {
+                    background.color = "#505668"
+                }
             }
             Button {
                 id: refreshButton

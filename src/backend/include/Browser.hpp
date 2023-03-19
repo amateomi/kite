@@ -30,7 +30,6 @@ public:
     [[nodiscard]] static int run();
 
 private:
-    std::unique_ptr<QGuiApplication> m_core{};
-    std::unique_ptr<QQmlApplicationEngine> m_qmlEngine{};
-    SearchBar m_searchBar{};
+    std::unique_ptr<QGuiApplication> m_core {};
+    std::unique_ptr<QQmlApplicationEngine> m_qmlEngine {};
 };
