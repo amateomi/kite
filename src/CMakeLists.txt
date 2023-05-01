@@ -32,6 +32,7 @@ qt_add_qml_module(kite
     
     QML_FILES
         main.qml
+        frontend/PageControlButton.qml
         
     # Textures/icons
     RESOURCES

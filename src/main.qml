@@ -22,10 +22,11 @@ import QtQml.Models
 
 import QtWebEngine
 
-import backend.logic
-
 import QtCore
 import QtQml
+
+import backend.logic
+import "frontend"
 
 ApplicationWindow {
     id: root
@@ -48,111 +49,29 @@ ApplicationWindow {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 10
 
-            // TODO: Move common functionality to other .qml files
-            // TODO: fix hoverable, when can't go back or forward
-            // Go back
-            RoundButton {
+            PageControlButton {
                 id: backButton
-                palette.button: "#505168"
-
-                icon.source: "images/backIcon.svg"
-                // IDK WHY 20. IF I SET 32 - BUTTON SIZES WILL BE 44?? 44-32 = 12, SO 32-12=20 AND IT WORKS!!!
-                icon.height: 20
-                icon.width: 20
-                icon.color: "#606166"
-                radius: 2
-                Layout.leftMargin: 10
-
-                background: Rectangle {
-                    width: backButton.width
-                    height: backButton.height
-                    color: "#383c49"
-                    radius: 10
-                }
-
-                // UI logic stuff
-                onHoveredChanged: {
-                    backButton.background.color = backButton.hovered ? "#505668" : "#383c49"
-                }
-
+                iconPicture: "backIcon.svg"
                 onPressed: {
                     if (currentWebView.canGoBack) {
-                        background.color = "#666d84"
                         currentWebView.goBack()
                     }
                 }
-                
-                onReleased: {
-                    background.color = "#505668"
-                }
             }
-
-            // Go forward
-            RoundButton {
+            PageControlButton {
                 id: forwardButton
-                palette.button: "#505168"
-
-                icon.source: "images/forwardIcon.svg"
-                icon.height: 20
-                icon.width: 20
-                icon.color: "#606166"
-                radius: 2
-
-                background: Rectangle {
-                    width: forwardButton.width
-                    height: forwardButton.height
-                    color: "#383c49"
-                    radius: 10
-                }
-
-                // UI logic stuff
-                onHoveredChanged: {
-                    forwardButton.background.color = forwardButton.hovered ? "#505668" : "#383c49"
-                }
-
+                iconPicture: "forwardIcon.svg"
                 onPressed: {
                     if (currentWebView.canGoForward) {
-                        background.color = "#666d84"
                         currentWebView.goForward()
                     }
                 }
-                
-                onReleased: {
-                    background.color = "#505668"
-                }
             }
-
-            // Reload
-            RoundButton {
+            PageControlButton {
                 id: reloadButton
-                palette.button: "#505168"
-
-                icon.source: "images/reloadIcon.svg"
-                icon.height: 20
-                icon.width: 20
-                icon.color: "#f0f4ff"
-                radius: 2
-
-
-                background: Rectangle {
-                    width: reloadButton.width
-                    height: reloadButton.height
-                    color: "#383c49"
-                    radius: 10
-                }
-
-                // UI logic stuff
-                onHoveredChanged: {
-                    reloadButton.background.color = reloadButton.hovered ? "#505668" : "#383c49"
-                }
-
+                iconPicture: "reloadIcon.svg"
                 onPressed: {
-                    background.color = "#666d84"
                     currentWebView.reload()
-                }
-                
-                onReleased: {
-                    background.color = "#505668"
                 }
             }
 
@@ -357,6 +276,7 @@ ApplicationWindow {
 
         Component {
             id: tabComponent
+
             WebEngineView {
                 id: webView
                 focus: true
@@ -364,17 +284,8 @@ ApplicationWindow {
                 url: "https://google.com"
 
                 onUrlChanged: searchBar.text = url
-
-                onCanGoBackChanged: {
-                    backButton.icon.color = canGoBack ? "#f0f4ff" : "#606166"
-                    backButton.enabled = canGoBack ? true : false
-                    backButton.hoverEnabled = canGoBack ? true : false
-                }
-                onCanGoForwardChanged: {
-                    forwardButton.icon.color = canGoForward ? "#f0f4ff" : "#606166"
-                    forwardButton.enabled = canGoForward ? true : false
-                    forwardButton.hoverEnabled = canGoForward ? true : false
-                }
+                onCanGoBackChanged: backButton.icon.color = canGoBack ? backButton.activeIconColor : backButton.defaultIconColor
+                onCanGoForwardChanged: forwardButton.icon.color = canGoForward ? forwardButton.activeIconColor : forwardButton.defaultIconColor
             }
         }
     }
