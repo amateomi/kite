@@ -14,22 +14,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#include "Browser.hpp"
+import QtQuick
 
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
-#include <QQmlContext>
+import QtWebEngine
 
-Browser::Browser(int argc, char* argv[])
-{
-    QtWebEngineQuick::initialize();
-    
-    m_core.reset(new QGuiApplication{argc, argv});
-    m_qmlEngine.reset(new QQmlApplicationEngine);
-    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
-    
-    qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
-    
-    m_qmlEngine->load("qrc:/base/main.qml");
+Component {
+    WebEngineView {
+        url: "https://google.com"
+
+        onUrlChanged: searchBar.text = url
+        onCanGoBackChanged: backButton.icon.color = canGoBack ? backButton.activeIconColor : backButton.defaultIconColor
+        onCanGoForwardChanged: forwardButton.icon.color = canGoForward ? forwardButton.activeIconColor : forwardButton.defaultIconColor
+    }
 }
-
-int Browser::run() { return QGuiApplication::exec(); }

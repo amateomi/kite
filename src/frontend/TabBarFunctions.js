@@ -14,22 +14,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#include "Browser.hpp"
-
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
-#include <QQmlContext>
-
-Browser::Browser(int argc, char* argv[])
-{
-    QtWebEngineQuick::initialize();
-    
-    m_core.reset(new QGuiApplication{argc, argv});
-    m_qmlEngine.reset(new QQmlApplicationEngine);
-    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
-    
-    qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
-    
-    m_qmlEngine->load("qrc:/base/main.qml");
+function createTab(profile, focusOnNewTab = true, url = undefined) {
+    var webview = pageContent.createObject(tabLayout, {profile: profile});
+    var newTabButton = tab.createObject(tabBar, {tabTitle: Qt.binding(function () { return webview.title; })});
+    tabBar.addItem(newTabButton);
+    if (focusOnNewTab) {
+        tabBar.setCurrentIndex(tabBar.count - 1);
+    }
+    if (url !== undefined) {
+        webview.url = url;
+    }
+    return webview;
 }
 
-int Browser::run() { return QGuiApplication::exec(); }
+function removeView(index) {
+    tabBar.removeItem(index);
+    if (tabBar.count > 1) {
+        tabBar.removeItem(tabBar.itemAt(index));
+        tabLayout.children[index].destroy();
+    } else {
+        browserWindow.close();
+    }
+}

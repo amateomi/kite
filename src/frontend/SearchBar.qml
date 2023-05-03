@@ -14,22 +14,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#include "Browser.hpp"
+import QtQuick
+import QtQuick.Controls
 
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
-#include <QQmlContext>
+import backend.logic
 
-Browser::Browser(int argc, char* argv[])
-{
-    QtWebEngineQuick::initialize();
-    
-    m_core.reset(new QGuiApplication{argc, argv});
-    m_qmlEngine.reset(new QQmlApplicationEngine);
-    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
-    
-    qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
-    
-    m_qmlEngine->load("qrc:/base/main.qml");
+TextField {
+    readonly property color textColor: "#f0f4ff"
+    readonly property color backgroundColor: "#505668"
+
+    width: parent.width / 2
+    height: 32
+
+    anchors.centerIn: parent
+
+    placeholderText: "Search with Google or enter address"
+    placeholderTextColor: textColor
+    palette.text: textColor
+    font.pixelSize: 16
+    selectByMouse: true
+
+    background: Rectangle {
+        color: backgroundColor
+        radius: 5
+    }
+
+    SearchBarManager {
+        id: searchBarManager
+    }
+
+    onAccepted: {
+        searchBarManager.receiveNewUrl(text, currentWebView)
+        focus = false
+    }
 }
-
-int Browser::run() { return QGuiApplication::exec(); }

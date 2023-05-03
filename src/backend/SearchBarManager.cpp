@@ -23,13 +23,14 @@
 #include <algorithm>
 #include <iostream>
 
-SearchBar::SearchBar(QObject* parent)
+SearchBarManager::SearchBarManager(QObject* parent)
     : QObject { parent }
 {
 }
 
-void SearchBar::receiveNewUrl(QString& url, QObject* webView)
+void SearchBarManager::receiveNewUrl(const QString& url, QObject* webView)
 {
+    qDebug() << "recieveNewUrl: " << url << Qt::endl;
     // Always refreshing, if contains https prefix
     static QRegularExpression httpsPattern { "^https://*", QRegularExpression::CaseInsensitiveOption };
     if (httpsPattern.match(url).hasMatch()) {

@@ -14,22 +14,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.     *
  ****************************************************************************/
 
-#include "Browser.hpp"
+import QtQuick
+import QtQuick.Controls
 
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
-#include <QQmlContext>
+RoundButton {
+    required property url iconPicture
 
-Browser::Browser(int argc, char* argv[])
-{
-    QtWebEngineQuick::initialize();
-    
-    m_core.reset(new QGuiApplication{argc, argv});
-    m_qmlEngine.reset(new QQmlApplicationEngine);
-    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
-    
-    qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
-    
-    m_qmlEngine->load("qrc:/base/main.qml");
+    readonly property color defaultIconColor: "#606166"
+    readonly property color activeIconColor: "#f0f4ff"
+    readonly property color defaultBackgroundColor: "#383c49"
+    readonly property color hoveredBackgroundColor: "#505668"
+
+    icon.height: 20
+    icon.width: 20
+    icon.source: "images/" + iconPicture
+    icon.color: defaultIconColor
+
+    background: Rectangle {
+        width: parent.width
+        height: parent.height
+        color: parent.hovered ? hoveredBackgroundColor : defaultBackgroundColor
+        radius: 10
+    }
 }
-
-int Browser::run() { return QGuiApplication::exec(); }

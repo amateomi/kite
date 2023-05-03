@@ -5,17 +5,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 6.2 COMPONENTS WebEngineQuick Gui REQUIRED)
 
 qt_add_executable(kite
-	main.cpp
+    main.cpp
 
-	backend/include/Browser.hpp
-  backend/include/SearchBarManager.hpp
-  backend/include/BookmarkManager.hpp
-  backend/include/BookmarkModel.hpp
+    backend/include/Browser.hpp
+    backend/include/SearchBarManager.hpp
+    backend/include/BookmarkManager.hpp
+    backend/include/BookmarkModel.hpp
   
-	backend/Browser.cpp
-  backend/SearchBarManager.cpp
-  backend/BookmarkManager.cpp
-  backend/BookmarkModel.cpp
+    backend/Browser.cpp
+    backend/SearchBarManager.cpp
+    backend/BookmarkManager.cpp
+    backend/BookmarkModel.cpp
 )
 
 target_include_directories(kite PRIVATE backend/include)
@@ -26,21 +26,22 @@ target_link_libraries(kite
 	Qt6::WebEngineQuick
 )
 
-include(Format)
-Format(kite backend)
-
-include(ClangTidy)
-AddClangTidy(kite backend)
-
 qt_add_qml_module(kite
     URI base
     VERSION 1.0
     
     QML_FILES
         main.qml
-        
-    # Textures/icons
+        frontend/PageControlButton.qml
+        frontend/BookmarkButton.qml
+        frontend/BookmarkAddButton.qml
+        frontend/SearchBar.qml
+        frontend/PageContent.qml
+        frontend/Tab.qml
+
     RESOURCES
+        frontend/TabBarFunctions.js
+
         ../images/backIcon.svg
         ../images/forwardIcon.svg
         ../images/reloadIcon.svg
