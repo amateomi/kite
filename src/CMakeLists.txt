@@ -36,8 +36,12 @@ qt_add_qml_module(kite
         frontend/BookmarkButton.qml
         frontend/BookmarkAddButton.qml
         frontend/SearchBar.qml
+        frontend/PageContent.qml
+        frontend/Tab.qml
 
     RESOURCES
+        frontend/TabBarFunctions.js
+
         ../images/backIcon.svg
         ../images/forwardIcon.svg
         ../images/reloadIcon.svg
