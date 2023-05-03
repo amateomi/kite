@@ -3,11 +3,11 @@
 #include <QObject>
 #include <QString>
 
-class SearchBar : public QObject {
+class SearchBarManager : public QObject {
     Q_OBJECT
 
 public:
-    explicit SearchBar(QObject* parent = nullptr);
+    explicit SearchBarManager(QObject* parent = nullptr);
 
-    Q_INVOKABLE void receiveNewUrl(QString&, QObject* webView);
+    Q_INVOKABLE void receiveNewUrl(const QString& url, QObject* webView);
 };

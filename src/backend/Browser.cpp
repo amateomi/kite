@@ -27,7 +27,7 @@ Browser::Browser(int argc, char* argv[])
     m_qmlEngine.reset(new QQmlApplicationEngine);
     m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
     
-    qmlRegisterType<SearchBar>("backend.logic", 1, 0, "SearchBar");
+    qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
     
     m_qmlEngine->load("qrc:/base/main.qml");
 }

@@ -41,8 +41,10 @@ ApplicationWindow {
 
     Rectangle {
         id: topBar
-        height: 48
+
         width: root.width
+        height: 48
+
         color: "#383c49"
 
         RowLayout {
@@ -77,36 +79,8 @@ ApplicationWindow {
             BookmarkButton {}
             BookmarkAddButton {}
         }
-
         SearchBar {
-            id: searchBarManager
-        }
-
-        TextField {
-            // UI settings
             id: searchBar
-            anchors.centerIn: parent
-            width: parent.width / 2
-            height: 32
-
-            palette.text: "#f0f4ff"
-            verticalAlignment: TextArea.AlignVCenter
-
-            placeholderText: "Search with Google or enter address"
-
-            selectByMouse: true
-            font.pixelSize: 16
-
-            background: Rectangle {
-                color: "#505168"
-                radius: 5
-            }
-
-            // Logic
-            onAccepted: {
-                searchBarManager.receiveNewUrl(text, currentWebView)
-                searchBar.focus = false
-            }
         }
     }
 

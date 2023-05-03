@@ -35,8 +35,8 @@ qt_add_qml_module(kite
         frontend/PageControlButton.qml
         frontend/BookmarkButton.qml
         frontend/BookmarkAddButton.qml
-        
-    # Textures/icons
+        frontend/SearchBar.qml
+
     RESOURCES
         ../images/backIcon.svg
         ../images/forwardIcon.svg
