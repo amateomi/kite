@@ -75,34 +75,7 @@ ApplicationWindow {
                 }
             }
             BookmarkButton {}
-            Button {
-                id: bookmarkAddButton
-                text: "+"
-
-                onClicked: bookmarkAddDialog.open()
-
-                Dialog {
-                    id: bookmarkAddDialog
-                    title: "Add Bookmark"
-                    height: 60
-                    width: 120
-
-                    TextField {
-                        id: bookmarkAddField
-
-                        height: 20
-                        width: 100
-
-                        verticalAlignment: Text.AlignVCenter
-                        placeholderText: qsTr("Name")
-
-                        onAccepted: {
-                            bookmarkManager.addBookmark(text, currentWebView.url)
-                            text = ""
-                        }
-                    }
-                }
-            }
+            BookmarkAddButton {}
         }
 
         SearchBar {
