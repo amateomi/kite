@@ -39,10 +39,12 @@ ApplicationWindow {
     Rectangle {
         id: topBar
 
+        readonly property color topBarColor: "#383c49"
+
         width: root.width
         height: 48
 
-        color: "#383c49"
+        color: topBarColor
 
         RowLayout {
             anchors.verticalCenter: parent.verticalCenter
