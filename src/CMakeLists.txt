@@ -33,6 +33,7 @@ qt_add_qml_module(kite
     QML_FILES
         main.qml
         frontend/PageControlButton.qml
+        frontend/BookmarkButton.qml
         
     # Textures/icons
     RESOURCES

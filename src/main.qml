@@ -31,13 +31,13 @@ import "frontend"
 ApplicationWindow {
     id: root
 
+    property Item currentWebView: tabLayout.children[tabBar.currentIndex]
+    property int createdTabs: 0
+
     width: 1280
     height: 720
 
     visible: true
-
-    property Item currentWebView: tabLayout.children[tabBar.currentIndex]
-    property int createdTabs: 0
 
     Rectangle {
         id: topBar
@@ -74,42 +74,7 @@ ApplicationWindow {
                     currentWebView.reload()
                 }
             }
-
-            Button {
-                id: bookmarkButton
-                text: "bookmarks"
-
-                onClicked: bookmarkMenu.open()
-
-                Menu {
-                    id: bookmarkMenu
-
-                    y: bookmarkButton.height
-                    width: 100
-                    height: 20 * bookmarkListView.count
-
-                    contentItem: bookmarkListView
-                    ListView {
-                        id: bookmarkListView
-
-                        anchors.fill: parent
-
-                        interactive: false
-
-                        model: bookmarkListModel
-
-                        delegate: Button {
-                            width: bookmarkListView.width; height: 20
-
-                            text: name
-
-                            onClicked: {
-                                currentWebView.url = url
-                            }
-                        }
-                    }
-                }
-            }
+            BookmarkButton {}
             Button {
                 id: bookmarkAddButton
                 text: "+"
