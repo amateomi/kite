@@ -16,19 +16,21 @@
 
 #include "Browser.hpp"
 
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
 #include <QQmlContext>
+#include <QtWebEngineQuick/qtwebenginequickglobal.h>
+
+#include "SearchBarManager.hpp"
 
 Browser::Browser(int argc, char* argv[])
 {
     QtWebEngineQuick::initialize();
-    
-    m_core.reset(new QGuiApplication{argc, argv});
+
+    m_core.reset(new QGuiApplication { argc, argv });
     m_qmlEngine.reset(new QQmlApplicationEngine);
-    m_bookmarkManager.reset(new BookmarkManager{*m_qmlEngine});
-    
+    m_bookmarkManager.reset(new BookmarkManager { *m_qmlEngine });
+
     qmlRegisterType<SearchBarManager>("backend.logic", 1, 0, "SearchBarManager");
-    
+
     m_qmlEngine->load("qrc:/base/main.qml");
 }
 
