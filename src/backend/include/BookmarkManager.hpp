@@ -17,19 +17,26 @@
 #pragma once
 
 #include <QObject>
-#include <QString>
-#include <QQmlApplicationEngine>
 #include <QObjectList>
+#include <QQmlApplicationEngine>
+#include <QString>
 
-class BookmarkManager : public QObject {
+class BookmarkManager final : public QObject {
     Q_OBJECT
 
 public:
     explicit BookmarkManager(QQmlApplicationEngine& qmlEngine, QObject* parent = nullptr);
 
+    ~BookmarkManager() override;
+
     Q_INVOKABLE void addBookmark(const QString& name, const QString& url);
 
 private:
-    QObjectList m_bookmarks{};
+    [[nodiscard]] bool load(const QJsonObject& json);
+    void save(QJsonObject& json) const;
+
+    static constexpr auto bookmarkFilepath = R"(C:\ProgramData\kite\bookmark.json)";
+
+    QObjectList m_bookmarks {};
     QQmlApplicationEngine& m_qmlEngine;
 };
