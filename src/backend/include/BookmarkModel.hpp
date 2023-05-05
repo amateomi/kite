@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QObject>
 
-class BookmarkModel : public QObject {
+class BookmarkModel final : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -26,13 +27,16 @@ class BookmarkModel : public QObject {
 
 public:
     explicit BookmarkModel(QObject* parent = nullptr);
-    explicit BookmarkModel(const QString& name, const QString& url, QObject* parent = nullptr);
+    explicit BookmarkModel(QString name, QString url, QObject* parent = nullptr);
 
     [[nodiscard]] QString name() const;
     void setName(const QString& name);
 
     [[nodiscard]] QString url() const;
     void setUrl(const QString& url);
+
+    [[nodiscard]] bool read(const QJsonObject& json);
+    void write(QJsonObject& json) const;
 
 signals:
     void nameChanged();
