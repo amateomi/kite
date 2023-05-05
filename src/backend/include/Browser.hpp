@@ -17,10 +17,8 @@
 #pragma once
 
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 
 #include "BookmarkManager.hpp"
-#include "SearchBarManager.hpp"
 
 class Browser {
 public:
@@ -29,7 +27,7 @@ public:
     [[nodiscard]] static int run();
 
 private:
-    QScopedPointer<QGuiApplication> m_core{};
-    QScopedPointer<QQmlApplicationEngine> m_qmlEngine{};
+    QScopedPointer<QGuiApplication> m_core {};
+    QScopedPointer<QQmlApplicationEngine> m_qmlEngine {};
     QScopedPointer<BookmarkManager> m_bookmarkManager;
 };

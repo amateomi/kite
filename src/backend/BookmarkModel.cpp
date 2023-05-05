@@ -16,18 +16,21 @@
 
 #include "BookmarkModel.hpp"
 
-BookmarkModel::BookmarkModel(QObject *parent)
-    : QObject{parent} {}
-
-BookmarkModel::BookmarkModel(const QString &name, const QString &url, QObject *parent)
-    : QObject{parent}, m_name{name}, m_url{url} {}
-
-QString BookmarkModel::name() const
+BookmarkModel::BookmarkModel(QObject* parent)
+    : QObject { parent }
 {
-    return m_name;
 }
 
-void BookmarkModel::setName(const QString &name)
+BookmarkModel::BookmarkModel(QString name, QString url, QObject* parent)
+    : QObject { parent }
+    , m_name { std::move(name) }
+    , m_url { std::move(url) }
+{
+}
+
+QString BookmarkModel::name() const { return m_name; }
+
+void BookmarkModel::setName(const QString& name)
 {
     if (m_name != name) {
         m_name = name;
@@ -35,15 +38,33 @@ void BookmarkModel::setName(const QString &name)
     }
 }
 
-QString BookmarkModel::url() const
-{
-    return m_url;
-}
+QString BookmarkModel::url() const { return m_url; }
 
-void BookmarkModel::setUrl(const QString &url)
+void BookmarkModel::setUrl(const QString& url)
 {
     if (m_url != url) {
         m_url = url;
         emit urlChanged();
     }
+}
+
+bool BookmarkModel::read(const QJsonObject& json)
+{
+    if (json.contains("name") and json["name"].isString()) {
+        m_name = json["name"].toString();
+    } else {
+        return false;
+    }
+    if (json.contains("url") and json["url"].isString()) {
+        m_url = json["url"].toString();
+    } else {
+        return false;
+    }
+    return true;
+}
+
+void BookmarkModel::write(QJsonObject& json) const
+{
+    json["name"] = m_name;
+    json["url"] = m_url;
 }
